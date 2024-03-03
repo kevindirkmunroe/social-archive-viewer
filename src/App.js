@@ -7,6 +7,10 @@ import Carousel, { Modal, ModalGateway } from "react-images";
 
 function App() {
 
+    const queryParameters = new URLSearchParams(window.location.search)
+    const username = queryParameters.get("user");
+    const userId = queryParameters.get("userId");
+
     const singularOrPlural = (resultSize) => {
         return resultSize === 1? 'Hashtag' : 'Hashtags'
     }
@@ -37,7 +41,6 @@ function App() {
 
         console.log(`[SocialArchiveViewer] showing ${hashtag}`);
         const newPostsData = [];
-        const userId = '10160143112298789';
         try {
             axios.get(`http://localhost:3001/social-archive/facebook/posts?userId=${userId}&hashtag=${hashtag}`
             )
@@ -57,6 +60,9 @@ function App() {
         }
     }
 
+    function shareHashtag(){
+        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archive Gallery!&body=http://localhost:3002`);
+    }
 
   if(hashtags.length === 0) {
       try {
@@ -86,28 +92,28 @@ function App() {
   return (
     <div className="App">
         <div style={{margin : 10, fontStyle: 'bold', color: 'green', float: 'left'}}>
-        <table><tbody><tr><td><img src={'./storage_black_24dp.svg'}/></td><td><h4>My Social Archive</h4></td></tr></tbody></table>
+        <table><tbody><tr><td><img src={'./storage_black_24dp.svg'}/></td><td><h4>My Social Archive Gallery</h4></td></tr></tbody></table>
       </div>
         <hr width="98%" color="green" size="1px" />
         <div className="table-container">
-            <table className="table table-hover" style={{tableLayout: 'fixed', textAlign: 'left', width: '10%', height: '20px', borderRight: 'none', borderLeft: 'none', borderCollapse: 'collapse', marginBottom: '20px', overflow: 'hidden' }}>
+            <table className="table table-hover" style={{tableLayout: 'fixed', textAlign: 'left', width: '12%', height: '20px', borderRight: 'none', borderLeft: 'none', borderCollapse: 'collapse', marginBottom: '20px', overflow: 'hidden' }}>
                 <tbody>
                 <tr>
                     <td colSpan={4}>
-                        <div style={{textAlign: 'left', height: '20px', fontSize: '22px', marginBottom: '10px'}}>Kevin Munroe</div>
+                        <div style={{textAlign: 'left', height: '20px', fontSize: '22px', marginBottom: '10px'}}>{username}</div>
                     </td>
                 </tr>
                 <tr>
-                    <td colSpan={4}>
-                        <div style={{textAlign: 'left'}}>{hashtags.length} Archived {singularOrPlural(hashtags.length)}</div>
+                    <td colSpan={5}>
+                        <div style={{textAlign: 'left'}}>{hashtags.length} Archived {singularOrPlural(hashtags.length)}  <img onClick={(item) => shareHashtag()} alt="Share" src="./export-share-icon.png" width="16" height="16" style={{marginLeft: '5px'}} /></div>
                     </td>
                 </tr>
-                <tr><td colspan={4}><hr/></td></tr>
+                <tr><td colSpan={4}><hr/></td></tr>
                 {hashtags ? hashtags.length > 0 && hashtags.map((item) => <tr onClick={(item) => showFacebookData(item)}><td style={{textAlign: 'left', width: '25px', height: '25px'}} key={item}><img alt="Facebook" src="./facebook-16x16-icon.png" width="16" height="16" style={{marginRight: '10px'}} /></td><td>#{item}</td></tr>) : <tr><td>No Data</td></tr>}
                 </tbody>
             </table>
-            <table className="table" style={{width: '90%', marginLeft: '20px', backgroundColor: '#D9DDDC', borderRadius: '10px'}}>
-                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '20px', height: '40px'}}>Kevin Munroe > Hashtags > #{selectedHashtag}</div>
+            <table className="table" style={{width: '90%', marginLeft: '20px', backgroundColor: '#ECECEC', borderRadius: '10px'}}>
+                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '20px', height: '40px'}}>{username} > #{selectedHashtag}</div>
                 <Gallery photos={photos} onClick={openLightbox} />
                 <ModalGateway>
                     {viewerIsOpen ? (
