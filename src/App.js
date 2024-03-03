@@ -1,7 +1,8 @@
-import StorageIcon from '@mui/icons-material/Storage';
 import './App.css';
 import axios from 'axios';
-import {useEffect, useState} from "react";
+import {useEffect, useState, useCallback} from "react";
+import Gallery from "react-photo-gallery";
+import Carousel, { Modal, ModalGateway } from "react-images";
 
 
 function App() {
@@ -20,7 +21,15 @@ function App() {
         setSelectedHashtag(selectedHashtag);
     }, [selectedHashtag])
 
+    const [viewerIsOpen, setViewerIsOpen] = useState(false);
+    const [currentImage, setCurrentImage] = useState(0);
+
     const [hashtags, setHashtags] = useState([]);
+
+    const closeLightbox = () => {
+        setCurrentImage(0);
+        setViewerIsOpen(false);
+    };
 
     function showFacebookData(item){
         const hashtag = item.target.innerHTML.substring(1);
@@ -35,9 +44,10 @@ function App() {
                 .then(res => {
                     res.data.forEach((doc) => {
                         const imageId = doc.id;
-                        newPostsData.push(`https://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`);
+                        newPostsData.push({image: `https://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: doc.message});
                     });
                     setPostsData(newPostsData);
+                    console.log(`setting postsdata ${newPostsData}`);
                 })
                 .catch((error) => {
                     console.log(`ARCHIVE ERROR: ${JSON.stringify(error)}`);
@@ -60,22 +70,62 @@ function App() {
       }
   }
 
+    const photos = [
+    ];
+    postsData.forEach(post => {
+        console.log(`caption: ${post.caption}`);
+       photos.push({src: post.image, width: 100, height: 100, caption: post.caption})
+    });
+
+    const openLightbox = useCallback((event, { photo, index }) => {
+        setCurrentImage(index);
+        setViewerIsOpen(true);
+    }, []);
+
+
   return (
     <div className="App">
         <div style={{margin : 10, fontStyle: 'bold', color: 'green', float: 'left'}}>
-        <table><tbody><tr><td><StorageIcon/></td><td><h4>My Social Archive</h4></td></tr></tbody></table>
+        <table><tbody><tr><td><img src={'./storage_black_24dp.svg'}/></td><td><h4>My Social Archive</h4></td></tr></tbody></table>
       </div>
         <hr width="98%" color="green" size="1px" />
-        <h4 style={{marginLeft: '20px', textAlign: 'left'}}>{hashtags.length} Archived {singularOrPlural(hashtags.length)}</h4>
-        <table className="table table-hover" style={{marginLeft: '25px', textAlign: 'left', width: '95%', border: '1px solid black', borderLeft: 'none', borderRight: 'none', borderCollapse: 'collapse', marginBottom: '20px' }}>
-            <tbody>
-            {hashtags ? hashtags.length > 0 && hashtags.map((item) => <tr onClick={(item) => showFacebookData(item)}><td style={{textAlign: 'left', width: '25px', height: '25px'}} key={item}><img alt="Facebook" src="./facebook-16x16-icon.png" width="16" height="16" style={{marginRight: '10px'}} /></td><td>#{item}</td></tr>) : <tr><td>No Data</td></tr>}
-            </tbody>
-        </table>
-        <h4 style={{textAlign: 'left', marginLeft: '20px', color: 'green'}}>"#{selectedHashtag}"</h4>
-        {
-            JSON.stringify(postsData)
-        }
+        <div className="table-container">
+            <table className="table table-hover" style={{tableLayout: 'fixed', textAlign: 'left', width: '10%', height: '20px', borderRight: 'none', borderLeft: 'none', borderCollapse: 'collapse', marginBottom: '20px', overflow: 'hidden' }}>
+                <tbody>
+                <tr>
+                    <td colSpan={4}>
+                        <div style={{textAlign: 'left', height: '20px', fontSize: '22px', marginBottom: '10px'}}>Kevin Munroe</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={4}>
+                        <div style={{textAlign: 'left'}}>{hashtags.length} Archived {singularOrPlural(hashtags.length)}</div>
+                    </td>
+                </tr>
+                <tr><td colspan={4}><hr/></td></tr>
+                {hashtags ? hashtags.length > 0 && hashtags.map((item) => <tr onClick={(item) => showFacebookData(item)}><td style={{textAlign: 'left', width: '25px', height: '25px'}} key={item}><img alt="Facebook" src="./facebook-16x16-icon.png" width="16" height="16" style={{marginRight: '10px'}} /></td><td>#{item}</td></tr>) : <tr><td>No Data</td></tr>}
+                </tbody>
+            </table>
+            <table className="table" style={{width: '90%', marginLeft: '20px', backgroundColor: '#D9DDDC', borderRadius: '10px'}}>
+                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '20px', height: '40px'}}>Kevin Munroe > Hashtags > #{selectedHashtag}</div>
+                <Gallery photos={photos} onClick={openLightbox} />
+                <ModalGateway>
+                    {viewerIsOpen ? (
+                        <Modal onClose={closeLightbox}>
+                            <Carousel
+                                currentIndex={currentImage}
+                                views={photos.map(x => ({
+                                    ...x,
+                                    srcset: x.srcSet,
+                                    caption: x.caption,
+                                }))}
+                            />
+                        </Modal>
+                    ) : null}
+                </ModalGateway>
+            </table>
+        </div>
+
     </div>
   );
 }

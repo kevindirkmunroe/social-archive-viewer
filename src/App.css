@@ -32,6 +32,18 @@
   background-color: #cefad0;
 }
 
+.table-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 45%;
+  margin-right: 10px;
+}
+
 .flipbook {
   width: 90vw;
   height: 90vh;
