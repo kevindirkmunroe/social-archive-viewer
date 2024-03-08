@@ -32,21 +32,53 @@
   background-color: #cefad0;
 }
 
-.table-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px;
-}
-
-.table {
-  border-collapse: collapse;
-  width: 45%;
-  margin-right: 10px;
-}
-
 .flipbook {
   width: 90vw;
   height: 90vh;
+}
+
+header,
+footer,
+.left-sidebar,
+main,
+.right-sidebar {
+  padding: 10px;
+}
+
+.parent {
+  height: 90vh;
+  display: grid;
+  grid: auto 1fr auto / 50px 1fr 50px;
+  font-family: Verdana;
+  font-weight: 00;
+}
+
+header {
+  grid-column: 1 / 4;
+  background-color: white;
+}
+
+.left-sidebar {
+  grid-column: 1 / 2;
+  background-color: white;
+}
+
+main {
+  grid-column: 2 / 3;
+  background-color: #F2F3F3;
+  border-width: thick;
+  border-color: lightgray;
+}
+
+.right-sidebar {
+  grid-column: 3 / 4;
+  background-color: white;
+}
+
+footer {
+  grid-column: 1 / 4;
+  background-color: darkgreen;
+  color: white;
 }
 
 @keyframes App-logo-spin {
