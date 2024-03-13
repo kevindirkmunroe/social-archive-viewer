@@ -8,18 +8,32 @@ function App() {
     const queryParameters = new URLSearchParams(window.location.search)
     const shareableId = queryParameters.get('id');
 
-    let username;
-    let userId;
-    let viewHashtag;
+    const [username, setUsername] = useState('');
+    useEffect(() => {
+        setUsername(username);
+    }, [username]);
+
+    const [viewHashtag, setViewHashtag] = useState('');
+    useEffect(() => {
+        setViewHashtag(viewHashtag);
+    }, [viewHashtag]);
+
+    const [userId, setUserId] = useState('');
+    useEffect(() => {
+        setUserId(userId);
+    }, [userId]);
+
     try {
         axios.get(`http://localhost:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
         )
             .then(res => {
                 console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
 
-                username = res.data.username;
-                userId = res.data.userId;
-                viewHashtag = res.data.hashtag;
+                setUsername(res.data[0].sharedHashtag.userName);
+                setUserId(res.data[0].sharedHashtag.userId);
+                setViewHashtag(res.data[0].sharedHashtag.hashtag);
+
+                showFacebookDataFromRequest();
             })
             .catch((error) => {
                 console.log(`[SocialArchiveViewer] ARCHIVE ERROR: ${JSON.stringify(error)}`);
