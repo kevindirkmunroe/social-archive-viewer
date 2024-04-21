@@ -22,32 +22,11 @@ function App() {
         setUserId(userId);
     }, [userId]);
 
-    useEffect(() => {
-        try {
-            axios.get(`http://localhost:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
-            )
-                .then(res => {
-                    console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
-
-                    setUsername(res.data[0].sharedHashtag.userName);
-                    setUserId(res.data[0].sharedHashtag.userId);
-                    setViewHashtag(res.data[0].sharedHashtag.hashtag);
-
-                    showFacebookDataFromRequest();
-                })
-                .catch((error) => {
-                    console.log(`[SocialArchiveViewer] ARCHIVE ERROR: ${JSON.stringify(error)}`);
-                });
-        }catch(error){
-            console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
-        }
-    }, []);
-
-
     const [postsData, setPostsData] = useState([]);
     useEffect(() => {
         setPostsData(postsData);
-    }, [postsData])
+    }, [postsData]);
+
 
     function showFacebookDataFromRequest(){
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
@@ -70,6 +49,28 @@ function App() {
             console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
         }
     }
+
+    useEffect(() => {
+        try {
+            axios.get(`http://localhost:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            )
+                .then(res => {
+                    console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
+
+                    setUsername(res.data[0].sharedHashtag.userName);
+                    setUserId(res.data[0].sharedHashtag.userId);
+                    setViewHashtag(res.data[0].sharedHashtag.hashtag);
+
+                    showFacebookDataFromRequest();
+                })
+                .catch((error) => {
+                    console.log(`[SocialArchiveViewer] ARCHIVE ERROR: ${JSON.stringify(error)}`);
+                });
+        }catch(error){
+            console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
+        }
+    }, []);
+
 
     // Load only once, as dictated by the empty array
     useEffect(() => {
