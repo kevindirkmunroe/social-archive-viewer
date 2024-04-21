@@ -72,7 +72,7 @@ function App() {
         }catch(error){
             console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
         }
-    }, []);
+    }, [BUILD_ENV.SERVICE_DOMAIN, shareableId, showFacebookDataFromRequest]);
 
     const encodeSpaces = (string) => {
         return string.replaceAll(' ', '%25%32%30');
