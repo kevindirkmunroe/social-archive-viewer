@@ -1,8 +1,7 @@
 import './App.css';
 import axios from 'axios';
 import {useEffect, useState, useCallback} from "react";
-import Gallery from "react-photo-gallery";
-import Carousel, { Modal, ModalGateway } from "react-images";
+import ImageGallery from "react-image-gallery";
 function App() {
 
     const queryParameters = new URLSearchParams(window.location.search)
@@ -93,8 +92,9 @@ function App() {
     const photos = [
     ];
     postsData.forEach(post => {
-        console.log(`caption: ${post.caption}`);
-       photos.push({src: post.image, width: 4, height: 3, caption: post.caption})
+        // console.log(`caption: ${post.caption}`);
+       // photos.push({src: post.image, width: 4, height: 3, caption: post.caption})
+        photos.push({original: post.image, thumbnail: post.image, originalHeight: '100px', originalWidth: '100px', thumbnailHeight: '32px', thumbnailWidth: '32px', description: post.caption});
     });
 
     const openLightbox = useCallback((event, { photo, index }) => {
@@ -110,27 +110,12 @@ function App() {
         <hr width="98%" color="green" size="1px" />
         <div className="parent">
             <header>
-                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '3px', height: '40px', fontWeight: 900}}>{username} > #{viewHashtag}</div>
+                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '3px', height: '40px', fontWeight: 900}}>{username} > <img alt="Facebook" src="./facebook-black.png" width="18" height="18" />&nbsp;#{viewHashtag}</div>
             </header>
             <section className="left-sidebar"></section>
             <main>
                 <table className="table" style={{width: '90%', marginLeft: '20px', backgroundColor: '#ECECEC', borderRadius: '10px'}}>
-
-                    <Gallery photos={photos} onClick={openLightbox} />
-                    <ModalGateway>
-                        {viewerIsOpen ? (
-                            <Modal onClose={closeLightbox}>
-                                <Carousel
-                                    currentIndex={currentImage}
-                                    views={photos.map(x => ({
-                                        ...x,
-                                        srcset: x.srcSet,
-                                        caption: x.caption,
-                                    }))}
-                                />
-                            </Modal>
-                        ) : null}
-                    </ModalGateway>
+                    <ImageGallery items={photos} />
                 </table>
             </main>
             <div className="right-sidebar">
