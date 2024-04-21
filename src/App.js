@@ -35,7 +35,7 @@ function App() {
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
         const newPostsData = [];
         try {
-            axios.get(`http://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
+            axios.get(`https://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
             )
                 .then(res => {
                     res.data.forEach((doc) => {
@@ -55,7 +55,7 @@ function App() {
 
     useEffect(() => {
         try {
-            axios.get(`http://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            axios.get(`https://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
             )
                 .then(res => {
                     console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
@@ -79,7 +79,7 @@ function App() {
     }
 
     function shareHashtag(){
-        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: http://${BUILD_ENV.WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
+        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: https://${BUILD_ENV.WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
     }
 
     const photos = [
@@ -92,7 +92,8 @@ function App() {
     <div className="App">
         <div style={{margin : 10, fontStyle: 'bold', color: 'green', float: 'left'}}>
         <table><tbody><tr><td><img src={'./black-cat.png'} width={'20px'} height={'20px'}/></td><td><h4>&nbsp;My Social Archivr</h4></td></tr></tbody></table>
-      </div>
+        <h2>Environment: {BUILD_ENV.SERVICE_DOMAIN}</h2>
+        </div>
         <hr width="98%" color="green" size="1px" />
         <div className="parent">
             <header>
