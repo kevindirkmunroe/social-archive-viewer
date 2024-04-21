@@ -7,6 +7,8 @@ function App() {
     const localProcessEnv = { REACT_APP_WEB_DOMAIN : 'localhost', REACT_APP_SERVICE_DOMAIN: 'localhost'};
     const BUILD_ENV = process.env.REACT_APP_WEB_DOMAIN ? process.env : localProcessEnv;
 
+    console.log(`REACT_APP_WEB_DOMAIN = ${BUILD_ENV.REACT_APP_WEB_DOMAIN}`);
+
     const queryParameters = new URLSearchParams(window.location.search)
     const shareableId = queryParameters.get('id');
 
@@ -92,7 +94,6 @@ function App() {
     <div className="App">
         <div style={{margin : 10, fontStyle: 'bold', color: 'green', float: 'left'}}>
         <table><tbody><tr><td><img src={'./black-cat.png'} width={'20px'} height={'20px'}/></td><td><h4>&nbsp;My Social Archivr</h4></td></tr></tbody></table>
-        <h2>DEBUG: Environment: {BUILD_ENV.REACT_APP_SERVICE_DOMAIN}</h2>
         </div>
         <hr width="98%" color="green" size="1px" />
         <div className="parent">
