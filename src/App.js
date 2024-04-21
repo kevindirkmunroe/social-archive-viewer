@@ -4,8 +4,8 @@ import {useEffect, useState} from "react";
 import ImageGallery from "react-image-gallery";
 function App() {
 
-    const localProcessEnv = { WEB_DOMAIN : 'localhost', SERVICE_DOMAIN: 'localhost'};
-    const BUILD_ENV = process.env.REACT_APP_BUILD_ENV || localProcessEnv;
+    // const localProcessEnv = { WEB_DOMAIN : 'localhost', SERVICE_DOMAIN: 'localhost'};
+    const BUILD_ENV = process.env; // .REACT_APP_BUILD_ENV || localProcessEnv;
 
     const queryParameters = new URLSearchParams(window.location.search)
     const shareableId = queryParameters.get('id');
