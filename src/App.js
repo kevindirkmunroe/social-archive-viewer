@@ -1,8 +1,11 @@
 import './App.css';
 import axios from 'axios';
-import {useEffect, useState, useCallback} from "react";
+import {useEffect, useState} from "react";
 import ImageGallery from "react-image-gallery";
 function App() {
+
+    const localProcessEnv = { WEB_DOMAIN : 'localhost', SERVICE_DOMAIN: 'localhost'};
+    const BUILD_ENV = process.env.REACT_APP_BUILD_ENV || localProcessEnv;
 
     const queryParameters = new URLSearchParams(window.location.search)
     const shareableId = queryParameters.get('id');
@@ -32,7 +35,7 @@ function App() {
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
         const newPostsData = [];
         try {
-            axios.get(`http://localhost:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
+            axios.get(`http://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
             )
                 .then(res => {
                     res.data.forEach((doc) => {
@@ -52,7 +55,7 @@ function App() {
 
     useEffect(() => {
         try {
-            axios.get(`http://localhost:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            axios.get(`http://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
             )
                 .then(res => {
                     console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
@@ -76,7 +79,7 @@ function App() {
     }
 
     function shareHashtag(){
-        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: http://localhost:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
+        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: http://${BUILD_ENV.WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
     }
 
     const photos = [
