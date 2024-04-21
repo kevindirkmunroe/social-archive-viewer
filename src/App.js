@@ -92,7 +92,7 @@ function App() {
     <div className="App">
         <div style={{margin : 10, fontStyle: 'bold', color: 'green', float: 'left'}}>
         <table><tbody><tr><td><img src={'./black-cat.png'} width={'20px'} height={'20px'}/></td><td><h4>&nbsp;My Social Archivr</h4></td></tr></tbody></table>
-        <h2>This Environment: {BUILD_ENV.SERVICE_DOMAIN}</h2>
+        <h2>DEBUG: Environment: {BUILD_ENV.SERVICE_DOMAIN}</h2>
         </div>
         <hr width="98%" color="green" size="1px" />
         <div className="parent">
