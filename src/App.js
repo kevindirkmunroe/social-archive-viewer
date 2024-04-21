@@ -22,37 +22,32 @@ function App() {
         setUserId(userId);
     }, [userId]);
 
-    try {
-        axios.get(`http://localhost:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
-        )
-            .then(res => {
-                console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
+    useEffect(() => {
+        try {
+            axios.get(`http://localhost:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            )
+                .then(res => {
+                    console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
 
-                setUsername(res.data[0].sharedHashtag.userName);
-                setUserId(res.data[0].sharedHashtag.userId);
-                setViewHashtag(res.data[0].sharedHashtag.hashtag);
+                    setUsername(res.data[0].sharedHashtag.userName);
+                    setUserId(res.data[0].sharedHashtag.userId);
+                    setViewHashtag(res.data[0].sharedHashtag.hashtag);
 
-                showFacebookDataFromRequest();
-            })
-            .catch((error) => {
-                console.log(`[SocialArchiveViewer] ARCHIVE ERROR: ${JSON.stringify(error)}`);
-            });
-    }catch(error){
-        console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
-    }
+                    showFacebookDataFromRequest();
+                })
+                .catch((error) => {
+                    console.log(`[SocialArchiveViewer] ARCHIVE ERROR: ${JSON.stringify(error)}`);
+                });
+        }catch(error){
+            console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
+        }
+    }, []);
+
 
     const [postsData, setPostsData] = useState([]);
     useEffect(() => {
         setPostsData(postsData);
     }, [postsData])
-
-    const [viewerIsOpen, setViewerIsOpen] = useState(false);
-    const [currentImage, setCurrentImage] = useState(0);
-
-    const closeLightbox = () => {
-        setCurrentImage(0);
-        setViewerIsOpen(false);
-    };
 
     function showFacebookDataFromRequest(){
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
@@ -96,11 +91,6 @@ function App() {
        // photos.push({src: post.image, width: 4, height: 3, caption: post.caption})
         photos.push({original: post.image, thumbnail: post.image, originalHeight: '100px', originalWidth: '100px', thumbnailHeight: '32px', thumbnailWidth: '32px', description: post.caption});
     });
-
-    const openLightbox = useCallback((event, { photo, index }) => {
-        setCurrentImage(index);
-        setViewerIsOpen(true);
-    }, []);
 
   return (
     <div className="App">
