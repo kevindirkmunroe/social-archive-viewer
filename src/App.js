@@ -5,7 +5,7 @@ import ImageGallery from "react-image-gallery";
 function App() {
 
     const localProcessEnv = { REACT_APP_WEB_DOMAIN : 'localhost', REACT_APP_SERVICE_DOMAIN: 'localhost'};
-    const BUILD_ENV = process.env.REACT_APP_WEB_DOMAIN ? process.env : localProcessEnv;
+    const BUILD_ENV = process.env.NODE_ENV === 'development'? localProcessEnv: process.env;
 
     console.log(`REACT_APP_WEB_DOMAIN = ${BUILD_ENV.REACT_APP_WEB_DOMAIN}`);
 
