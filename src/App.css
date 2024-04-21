@@ -65,7 +65,6 @@ header {
 
 main {
   grid-column: 2 / 3;
-  background-color: darkgrey;
   border-width: thick;
   border-color: lightgray;
 }
@@ -89,3 +88,5 @@ footer {
     transform: rotate(360deg);
   }
 }
+
+@import "~react-image-gallery/styles/css/image-gallery.css";

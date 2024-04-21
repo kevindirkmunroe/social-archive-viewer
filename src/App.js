@@ -28,11 +28,11 @@ function App() {
     }, [postsData]);
 
 
-    function showFacebookDataFromRequest(){
+    function showFacebookDataFromRequest(uid, vhashtag){
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
         const newPostsData = [];
         try {
-            axios.get(`http://localhost:3001/social-archive/facebook/posts?userId=${userId}&hashtag=${viewHashtag}`
+            axios.get(`http://localhost:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
             )
                 .then(res => {
                     res.data.forEach((doc) => {
@@ -61,7 +61,7 @@ function App() {
                     setUserId(res.data[0].sharedHashtag.userId);
                     setViewHashtag(res.data[0].sharedHashtag.hashtag);
 
-                    showFacebookDataFromRequest();
+                    showFacebookDataFromRequest(res.data[0].sharedHashtag.userId, res.data[0].sharedHashtag.hashtag);
                 })
                 .catch((error) => {
                     console.log(`[SocialArchiveViewer] ARCHIVE ERROR: ${JSON.stringify(error)}`);
@@ -69,12 +69,6 @@ function App() {
         }catch(error){
             console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
         }
-    }, []);
-
-
-    // Load only once, as dictated by the empty array
-    useEffect(() => {
-        showFacebookDataFromRequest();
     }, []);
 
     const encodeSpaces = (string) => {
@@ -88,9 +82,7 @@ function App() {
     const photos = [
     ];
     postsData.forEach(post => {
-        // console.log(`caption: ${post.caption}`);
-       // photos.push({src: post.image, width: 4, height: 3, caption: post.caption})
-        photos.push({original: post.image, thumbnail: post.image, originalHeight: '100px', originalWidth: '100px', thumbnailHeight: '32px', thumbnailWidth: '32px', description: post.caption});
+        photos.push({original: post.image, thumbnail: post.image, description: post.caption});
     });
 
   return (
@@ -105,9 +97,7 @@ function App() {
             </header>
             <section className="left-sidebar"></section>
             <main>
-                <table className="table" style={{width: '90%', marginLeft: '20px', backgroundColor: '#ECECEC', borderRadius: '10px'}}>
-                    <ImageGallery items={photos} />
-                </table>
+                    <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/>
             </main>
             <div className="right-sidebar">
                 <img alt="Info" src="./icons8-info-50.png" style={{width: '24px', height: '24px'}} /><p/>
