@@ -44,7 +44,7 @@ function App() {
                 .then(res => {
                     res.data.forEach((doc) => {
                         const imageId = doc.id;
-                        newPostsData.push({image: `${PROTOCOL}s://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: doc.message});
+                        newPostsData.push({image: `${PROTOCOL}://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: doc.message});
                     });
                     setPostsData(newPostsData);
                     console.log(`[SocialArchiveViewer] setting postsdata ${newPostsData}`);
