@@ -4,8 +4,10 @@ import {useEffect, useState} from "react";
 import ImageGallery from "react-image-gallery";
 function App() {
 
+    const isLocal = window.location.hostname === 'localhost';
     const localProcessEnv = { REACT_APP_WEB_DOMAIN : 'localhost', REACT_APP_SERVICE_DOMAIN: 'localhost'};
-    const BUILD_ENV = window.location.hostname === 'localhost'? localProcessEnv : process.env;
+    const BUILD_ENV = isLocal ? localProcessEnv : process.env;
+    const PROTOCOL = isLocal? 'http' : 'https';
 
     console.log(`REACT_APP_WEB_DOMAIN = ${BUILD_ENV.REACT_APP_WEB_DOMAIN}`);
 
@@ -37,12 +39,12 @@ function App() {
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
         const newPostsData = [];
         try {
-            axios.get(`http://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
+            axios.get(`${PROTOCOL}://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
             )
                 .then(res => {
                     res.data.forEach((doc) => {
                         const imageId = doc.id;
-                        newPostsData.push({image: `https://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: doc.message});
+                        newPostsData.push({image: `${PROTOCOL}s://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: doc.message});
                     });
                     setPostsData(newPostsData);
                     console.log(`[SocialArchiveViewer] setting postsdata ${newPostsData}`);
@@ -57,7 +59,7 @@ function App() {
 
     useEffect(() => {
         try {
-            axios.get(`http://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            axios.get(`${PROTOCOL}://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
             )
                 .then(res => {
                     console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
@@ -81,7 +83,7 @@ function App() {
     }
 
     function shareHashtag(){
-        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: http://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
+        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: ${PROTOCOL}://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
     }
 
     const photos = [
