@@ -1,12 +1,11 @@
 import axios from 'axios';
-import 'dotenv/config.js';
 import {useEffect, useState} from "react";
 import ImageGallery from "react-image-gallery";
 
 import './App.css';
 function App() {
 
-    const isLocal = window.location.hostname === 'localhost';
+    const isLocal = process.env.NODE_ENV == 'development';
     const localProcessEnv = { REACT_APP_WEB_DOMAIN : 'localhost', REACT_APP_SERVICE_DOMAIN: 'localhost'};
     const BUILD_ENV = isLocal ? localProcessEnv : process.env;
     const PROTOCOL = isLocal? 'http' : 'https';
@@ -50,7 +49,6 @@ function App() {
                         newPostsData.push({image: `${PROTOCOL}://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: doc.message});
                     });
                     setPostsData(newPostsData);
-                    console.log(`[SocialArchiveViewer] setting postsdata ${newPostsData}`);
                 })
                 .catch((error) => {
                     console.log(`[SocialArchiveViewer] ARCHIVE ERROR: ${JSON.stringify(error)}`);
