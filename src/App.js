@@ -59,7 +59,7 @@ function App() {
 
     useEffect(() => {
         try {
-            axios.get(`${PROTOCOL}://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            axios.get(`http://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
             )
                 .then(res => {
                     console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
