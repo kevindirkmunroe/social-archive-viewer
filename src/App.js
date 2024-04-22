@@ -5,7 +5,7 @@ import ImageGallery from "react-image-gallery";
 function App() {
 
     const localProcessEnv = { REACT_APP_WEB_DOMAIN : 'localhost', REACT_APP_SERVICE_DOMAIN: 'localhost'};
-    const BUILD_ENV = process.env.NODE_ENV === 'development'? localProcessEnv: process.env;
+    const BUILD_ENV = window.location.hostname === 'localhost'? localProcessEnv : process.env;
 
     console.log(`REACT_APP_WEB_DOMAIN = ${BUILD_ENV.REACT_APP_WEB_DOMAIN}`);
 
@@ -37,7 +37,7 @@ function App() {
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
         const newPostsData = [];
         try {
-            axios.get(`https://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
+            axios.get(`http://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
             )
                 .then(res => {
                     res.data.forEach((doc) => {
@@ -57,7 +57,7 @@ function App() {
 
     useEffect(() => {
         try {
-            axios.get(`https://${BUILD_ENV.SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            axios.get(`http://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
             )
                 .then(res => {
                     console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
@@ -74,14 +74,14 @@ function App() {
         }catch(error){
             console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
         }
-    }, [BUILD_ENV.REACT_APP_SERVICE_DOMAIN, shareableId, showFacebookDataFromRequest]);
+    }, []);
 
     const encodeSpaces = (string) => {
         return string.replaceAll(' ', '%25%32%30');
     }
 
     function shareHashtag(){
-        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: https://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
+        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: http://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
     }
 
     const photos = [
