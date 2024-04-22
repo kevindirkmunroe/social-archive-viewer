@@ -1,7 +1,9 @@
-import './App.css';
 import axios from 'axios';
+import 'dotenv/config.js';
 import {useEffect, useState} from "react";
 import ImageGallery from "react-image-gallery";
+
+import './App.css';
 function App() {
 
     const isLocal = window.location.hostname === 'localhost';
@@ -39,6 +41,7 @@ function App() {
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
         const newPostsData = [];
         try {
+            console.log(`DEBUG: getting posts`)
             axios.get(`${PROTOCOL}://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/posts?userId=${uid}&hashtag=${vhashtag}`
             )
                 .then(res => {
@@ -59,7 +62,7 @@ function App() {
 
     useEffect(() => {
         try {
-            axios.get(`http://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
+            axios.get(`${PROTOCOL}://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
             )
                 .then(res => {
                     console.log(`[SocialArchiveViewer] got result for shareableId ${shareableId}: ${JSON.stringify(res.data)}`);
