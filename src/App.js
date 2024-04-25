@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import ImageGallery from "react-image-gallery";
+import { RotatingLines } from 'react-loader-spinner';
 
 import './App.css';
 function App() {
@@ -35,9 +36,23 @@ function App() {
         setPostsData(postsData);
     }, [postsData]);
 
+    const [isDataLoading, setIsDataLoading] = useState(false);
+
+    function Loader() {
+        return (
+            <RotatingLines
+                strokeColor="green"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="96"
+                visible={true}
+            />
+        )
+    }
 
     function showFacebookDataFromRequest(uid, vhashtag){
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
+        setIsDataLoading(true);
         const newPostsData = [];
         try {
             console.log(`DEBUG: getting posts`)
@@ -55,10 +70,13 @@ function App() {
                 });
         }catch(error){
             console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
+        }finally{
+            setIsDataLoading(false);
         }
     }
 
     useEffect(() => {
+        setIsDataLoading(true);
         try {
             axios.get(`${PROTOCOL}://${BUILD_ENV.REACT_APP_SERVICE_DOMAIN}:3001/social-archive/facebook/shareable-hashtag-details?id=${shareableId}`
             )
@@ -76,6 +94,8 @@ function App() {
                 });
         }catch(error){
             console.log(`[SocialArchiveViewer] fetch ERROR: ${JSON.stringify(error)}`);
+        }finally{
+            setIsDataLoading(false);
         }
     }, []);
 
@@ -84,7 +104,7 @@ function App() {
     }
 
     function shareHashtag(){
-        window.open(`mailto:myfriend@example.com?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: ${PROTOCOL}://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
+        window.open(`mailto:?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: ${PROTOCOL}://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
     }
 
     const photos = [
@@ -92,6 +112,7 @@ function App() {
     postsData.forEach(post => {
         photos.push({original: post.image, thumbnail: post.image, description: post.caption});
     });
+
 
   return (
     <div className="App">
@@ -101,11 +122,11 @@ function App() {
         <hr width="98%" color="green" size="1px" />
         <div className="parent">
             <header>
-                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '3px', height: '40px', fontWeight: 900}}>{username} > <img alt="Facebook" src="./facebook-black.png" width="18" height="18" />&nbsp;#{viewHashtag}</div>
+                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '3px', height: '40px', fontWeight: 900}}><img alt="Facebook" src="./facebook-black.png" width="18" height="18" /> {username}  > &nbsp;#{viewHashtag}</div>
             </header>
             <section className="left-sidebar"></section>
             <main>
-                    <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/>
+                { isDataLoading ? <Loader/> : <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/> }
             </main>
             <div className="right-sidebar">
                 <img alt="Info" src="./icons8-info-50.png" style={{width: '24px', height: '24px'}} /><p/>
