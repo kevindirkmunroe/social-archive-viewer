@@ -50,6 +50,11 @@ function App() {
         )
     }
 
+    function toUserReadableDate(date){
+        const res = new Date(date);
+        return res.toDateString();
+    }
+
     function showFacebookDataFromRequest(uid, vhashtag){
         console.log(`[SocialArchiveViewer] showing ${viewHashtag}`);
         setIsDataLoading(true);
@@ -61,7 +66,8 @@ function App() {
                 .then(res => {
                     res.data.forEach((doc) => {
                         const imageId = doc.id;
-                        newPostsData.push({image: `${PROTOCOL}://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: doc.message});
+                        const caption = `${toUserReadableDate(doc.created_time)} - ${doc.message}`;
+                        newPostsData.push({image: `${PROTOCOL}://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: caption});
                     });
                     setPostsData(newPostsData);
                 })
@@ -121,6 +127,8 @@ function App() {
           <div className="parent">
               <header>
                   <div style={{
+                      alignContent: 'space-evenly',
+                      border: '0px',
                       textAlign: 'left',
                       marginLeft: '20px',
                       marginTop: '3px',
@@ -139,7 +147,7 @@ function App() {
               <main style={{alignItems: 'center'}}>
                   <div style={{overflowY: 'auto', width: '70%', height: '70%', margin: 'auto'}}>
                       {isDataLoading ? <Loader/> :
-                          <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/>}
+                           <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/>}
                   </div>
               </main>
               <div className="right-sidebar">
