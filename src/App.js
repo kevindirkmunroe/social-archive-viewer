@@ -115,26 +115,41 @@ function App() {
 
 
   return (
-    <div className="App">
-        <div style={{margin : 10, fontStyle: 'bold', color: 'green', float: 'left'}}>
-        <table><tbody><tr><td><img src={'./black-cat.png'} width={'20px'} height={'20px'}/></td><td><h4>&nbsp;My Social Archivr</h4></td></tr></tbody></table>
-        </div>
-        <hr width="98%" color="green" size="1px" />
-        <div className="parent">
-            <header>
-                <div style={{textAlign: 'left', marginLeft: '20px', marginTop: '3px', height: '40px', fontWeight: 900}}><img alt="Facebook" src="./facebook-black.png" width="18" height="18" /> {username}  > &nbsp;#{viewHashtag}</div>
-            </header>
-            <section className="left-sidebar"></section>
-            <main>
-                { isDataLoading ? <Loader/> : <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/> }
-            </main>
-            <div className="right-sidebar">
-                <img alt="Info" src="./icons8-info-50.png" style={{width: '24px', height: '24px'}} /><p/>
-                <img onClick={() => shareHashtag()} alt="Share" src="./export-share-icon.png" width="24" height-="24" style={{marginLeft: '5px'}} />
-            </div>
-            <footer style={{textAlign: 'right'}}>© 2024, Bronze Giant LLC</footer>
-        </div>
-    </div>
+      <div className="App">
+          <div style={{float: 'left', margin: '10px', fontWeight: 900}}><img alt='.' src={'./black-cat.png'} width={'20px'} height={'20px'}/>&nbsp;My Social Archivr</div>
+          <hr width="98%" color="green" size="1px"/>
+          <div className="parent">
+              <header>
+                  <div style={{
+                      textAlign: 'left',
+                      marginLeft: '20px',
+                      marginTop: '3px',
+                      height: '40px',
+                      fontWeight: 900
+                  }}>
+                      <div style={{height: '100px', display: 'inline-block', textAlign: 'center'}}><img alt="Facebook"
+                                                                                                        src="./facebook-black.png"
+                                                                                                        width="18"
+                                                                                                        height="18"/> {username} > &nbsp;
+                      </div>
+                      <div style={{fontSize: 30, marginTop: '10px', display: 'inline-block'}}>#{viewHashtag}</div>
+                  </div>
+              </header>
+              <section className="left-sidebar"></section>
+              <main style={{alignItems: 'center'}}>
+                  <div style={{overflowY: 'auto', width: '70%', height: '70%', margin: 'auto'}}>
+                      {isDataLoading ? <Loader/> :
+                          <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/>}
+                  </div>
+              </main>
+              <div className="right-sidebar">
+                  <img alt="Info" src="./icons8-info-50.png" style={{width: '24px', height: '24px'}}/><p/>
+                  <img onClick={() => shareHashtag()} alt="Share" src="./export-share-icon.png" width="24" height-="24"
+                       style={{marginLeft: '5px'}}/>
+              </div>
+              <footer style={{textAlign: 'right'}}>© 2024, Bronze Giant LLC</footer>
+          </div>
+      </div>
   );
 }
 
