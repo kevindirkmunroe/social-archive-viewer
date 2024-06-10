@@ -81,9 +81,10 @@ footer {
   grid-column: 1 / 4;
   background-color: darkgreen;
   color: white;
+  font-size: 12px;
 }
 
-.image-gallery-slide {
+.image-gallery-content:not(.fullscreen) .image-gallery-slide {
   max-height: 500px;
 }
 

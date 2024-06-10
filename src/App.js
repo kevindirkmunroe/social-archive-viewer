@@ -2,6 +2,7 @@ import axios from 'axios';
 import {useEffect, useState} from "react";
 import ImageGallery from "react-image-gallery";
 import { RotatingLines } from 'react-loader-spinner';
+import Modal from 'react-modal';
 
 import './App.css';
 function App() {
@@ -37,6 +38,14 @@ function App() {
     }, [postsData]);
 
     const [isDataLoading, setIsDataLoading] = useState(false);
+
+    const [modalIsOpen, setIsOpen] = useState(false);
+    function openModal() {
+        setIsOpen(true);
+    }
+    function closeModal() {
+        setIsOpen(false);
+    }
 
     function Loader() {
         return (
@@ -113,12 +122,27 @@ function App() {
         window.open(`mailto:?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: ${PROTOCOL}://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
     }
 
+    function showInfo(){
+        alert('My Social Archivr v1.0\n© Bronze Giant LLC 2024');
+    }
+
     const photos = [
     ];
     postsData.forEach(post => {
         photos.push({original: post.image, thumbnail: post.image, description: post.caption});
     });
 
+    const customStyles = {
+        content: {
+            top: '30%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 10,
+        },
+    };
 
   return (
       <div className="App">
@@ -139,8 +163,8 @@ function App() {
                       <div style={{height: '100px', display: 'inline-block', textAlign: 'center', marginLeft: '20px', fontSize: '12px'}}>
                       <img alt="Facebook"
                            src="./facebook-black.png"
-                           width="18"
-                           height="18"/> {username}
+                           width="10"
+                           height="10"/> {username}
                       </div>
                   </div>
               </header>
@@ -152,9 +176,20 @@ function App() {
                   </div>
               </main>
               <div className="right-sidebar">
-                  <img alt="Info" src="./icons8-info-50.png" style={{width: '24px', height: '24px'}}/><p/>
-                  <img onClick={() => shareHashtag()} alt="Share" src="./export-share-icon.png" width="24" height-="24"
+                  <img onClick={() => openModal()} alt="Info" src="./icons8-info-50.png" style={{width: '24px', height: '24px'}}/><p/>
+                  {/* <img onClick={() => shareHashtag()} alt="Share" src="./export-share-icon.png" width="24" height-="24"
                        style={{marginLeft: '5px'}}/>
+                  */}
+                  <Modal
+                      isOpen={modalIsOpen}
+                      style={customStyles}
+                      contentLabel="About My Social Archivr"
+                  >
+                      <div style={{fontWeight: 900, fontSize:'20px', textAlign: 'center', marginBottom: '20px'}}><img alt='.' src={'./black-cat.png'} width={'20px'} height={'20px'}/>&nbsp;My Social Archivr</div>
+                      <div>A viewer for archived Social Media</div>
+                      <div style={{textAlign: 'center', marginTop: '5px'}}>© Bronze Giant LLC 2024</div>
+                      <div style={{marginTop: '30px', display: 'flex', alignItems:'center', justifyContent: 'center'}}><button onClick={closeModal}>Close</button></div>
+                  </Modal>
               </div>
               <footer style={{textAlign: 'right'}}>© 2024, Bronze Giant LLC</footer>
           </div>
