@@ -1,5 +1,8 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
 .App {
   text-align: center;
+  overflow-x: hidden;
 }
 
 .App-logo {
@@ -80,6 +83,10 @@ footer {
   color: white;
 }
 
+.image-gallery-slide {
+  max-height: 500px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -89,4 +96,3 @@ footer {
   }
 }
 
-@import "~react-image-gallery/styles/css/image-gallery.css";

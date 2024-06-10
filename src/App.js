@@ -125,29 +125,30 @@ function App() {
           <div style={{float: 'left', margin: '10px', fontWeight: 900}}><img alt='.' src={'./black-cat.png'} width={'20px'} height={'20px'}/>&nbsp;My Social Archivr</div>
           <hr width="98%" color="green" size="1px"/>
           <div className="parent">
-              <header>
+              <header style={{border: 0}}>
                   <div style={{
                       alignContent: 'space-evenly',
                       border: '0px',
                       textAlign: 'left',
-                      marginLeft: '20px',
+                      marginLeft: '0px',
                       marginTop: '3px',
-                      height: '40px',
+                      height: '60px',
                       fontWeight: 900
                   }}>
-                      <div style={{height: '100px', display: 'inline-block', textAlign: 'center'}}><img alt="Facebook"
-                                                                                                        src="./facebook-black.png"
-                                                                                                        width="18"
-                                                                                                        height="18"/> {username} > &nbsp;
+                      <div style={{fontSize: 50, display: 'inline-block', marginTop: '2px', fontFamily: 'Snell Roundhand'}}>{viewHashtag}</div>
+                      <div style={{height: '100px', display: 'inline-block', textAlign: 'center', marginLeft: '20px', fontSize: '12px'}}>
+                      <img alt="Facebook"
+                           src="./facebook-black.png"
+                           width="18"
+                           height="18"/> {username}
                       </div>
-                      <div style={{fontSize: 30, marginTop: '10px', display: 'inline-block'}}>#{viewHashtag}</div>
                   </div>
               </header>
               <section className="left-sidebar"></section>
               <main style={{alignItems: 'center'}}>
-                  <div style={{overflowY: 'auto', width: '70%', height: '70%', margin: 'auto'}}>
+                  <div style={{width: '70%', height: '70%', margin: 'auto'}}>
                       {isDataLoading ? <Loader/> :
-                           <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'}/>}
+                           <ImageGallery items={photos} thumbnailPosition={'left'} originalHeight={'100px'} />}
                   </div>
               </main>
               <div className="right-sidebar">
