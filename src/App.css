@@ -88,6 +88,15 @@ footer {
   max-height: 500px;
 }
 
+dialog {
+  width: 80%;
+  top: 50px;
+}
+
+dialog::backdrop {
+  background: rgba(255,0,0,.25);
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

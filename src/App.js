@@ -78,6 +78,7 @@ function App() {
                         const caption = `${toUserReadableDate(doc.created_time)} - ${doc.message}`;
                         newPostsData.push({image: `${PROTOCOL}://s3.us-west-1.amazonaws.com/bronze-giant-social-archive/${imageId}.jpg`, caption: caption});
                     });
+                    newPostsData.reverse().shift(); // remove pesky blank first pic
                     setPostsData(newPostsData);
                 })
                 .catch((error) => {
@@ -113,18 +114,6 @@ function App() {
             setIsDataLoading(false);
         }
     }, []);
-
-    const encodeSpaces = (string) => {
-        return string.replaceAll(' ', '%25%32%30');
-    }
-
-    function shareHashtag(){
-        window.open(`mailto:?subject=Check out these awesome pics from ${username}'s My Social Archivr Gallery!&body=Enjoy!%0A%0A%2D%2DThe My Social Archive Team%0A%0AClick Here: ${PROTOCOL}://${BUILD_ENV.REACT_APP_WEB_DOMAIN}:3002?userId=${userId}%26user=${encodeSpaces(username)}%26hashtag=${encodeURIComponent(viewHashtag)}`);
-    }
-
-    function showInfo(){
-        alert('My Social Archivr v1.0\n© Bronze Giant LLC 2024');
-    }
 
     const photos = [
     ];
