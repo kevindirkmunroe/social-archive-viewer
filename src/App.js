@@ -135,7 +135,7 @@ function App() {
 
   return (
       <div className="App">
-          <div style={{float: 'left', margin: '10px', fontWeight: 900}}><img alt='.' src={'./black-cat.png'} width={'20px'} height={'20px'}/>&nbsp;My Social Archivr</div>
+          <div style={{float: 'left', margin: '10px', fontWeight: 900, color: 'black'}}><img alt='.' src={'./black-cat.png'} width={'20px'} height={'20px'}/>&nbsp;My Social Archivr</div>
           <hr width="98%" color="green" size="1px"/>
           <div className="parent">
               <header style={{border: 0}}>
@@ -143,10 +143,11 @@ function App() {
                       alignContent: 'space-evenly',
                       border: '0px',
                       textAlign: 'left',
-                      marginLeft: '0px',
+                      marginLeft: '20px',
                       marginTop: '3px',
                       height: '60px',
-                      fontWeight: 900
+                      fontWeight: 900,
+                      color: 'black'
                   }}>
                       <div style={{fontSize: 50, display: 'inline-block', marginTop: '2px', fontFamily: 'Snell Roundhand'}}>{viewHashtag}</div>
                       <div style={{height: '100px', display: 'inline-block', textAlign: 'center', marginLeft: '20px', fontSize: '12px'}}>
@@ -175,7 +176,7 @@ function App() {
                       contentLabel="About My Social Archivr"
                   >
                       <div style={{fontWeight: 900, fontSize:'20px', textAlign: 'center', marginBottom: '20px'}}><img alt='.' src={'./black-cat.png'} width={'20px'} height={'20px'}/>&nbsp;My Social Archivr</div>
-                      <div>A viewer for archived Social Media</div>
+                      <div>A Gallery for archived Social Media</div>
                       <div style={{textAlign: 'center', marginTop: '5px'}}>© Bronze Giant LLC 2024</div>
                       <div style={{marginTop: '30px', display: 'flex', alignItems:'center', justifyContent: 'center'}}><button onClick={closeModal}>Close</button></div>
                   </Modal>

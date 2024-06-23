@@ -17,7 +17,6 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -63,7 +62,6 @@ header {
 
 .left-sidebar {
   grid-column: 1 / 2;
-  background-color: white;
 }
 
 main {
@@ -74,13 +72,12 @@ main {
 
 .right-sidebar {
   grid-column: 3 / 4;
-  background-color: white;
 }
 
 footer {
   grid-column: 1 / 4;
-  background-color: darkgreen;
-  color: white;
+  background-color: white;
+  color: black;
   font-size: 12px;
 }
 
